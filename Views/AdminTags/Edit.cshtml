@@ -9,8 +9,13 @@
 
 
 <div class="container py-5">
-    <form method="post" >
-        <div class="mb-3">
+
+    @if (Model != null)
+    {
+
+
+        <form method="post" >
+            <div class="mb-3">
             <label class="form-label"> Id</label>
             <input type="text" id="Id" class="form-control" asp-for="Id" readonly />
 
@@ -36,6 +41,11 @@
         </div>
 
 
-    </form>
+        </form>
+    }
+    else
+    {
+        <p>Nothig is found!</p>
+    }
 
 </div>
