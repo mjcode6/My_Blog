@@ -1,6 +1,7 @@
 ﻿using Bloggie.Web.Data;
 using Bloggie.Web.Models.Domain;
 using Bloggie.Web.Models.ViewModels;
+using Bloggie.Web.Repo;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection.Metadata.Ecma335;
@@ -12,10 +13,11 @@ namespace Bloggie.Web.Controllers
 
     public class AdminTagsController : Controller
     {
-        private readonly BloggieDbContext bloggieDbContext;
-        public AdminTagsController(BloggieDbContext bloggieDbContext)
+        private readonly ITagRepository tagRepository;
+
+        public AdminTagsController(ITagRepository tagRepository)
         {
-            this.bloggieDbContext = bloggieDbContext;
+            this.tagRepository = tagRepository;
         }
 
 
@@ -41,8 +43,7 @@ namespace Bloggie.Web.Controllers
 
             };
 
-           await bloggieDbContext.Tags.AddAsync(tag);
-            await bloggieDbContext.SaveChangesAsync();
+            await tagRepository.AddAsync(tag);
 
             return RedirectToAction("List");
         }
@@ -55,7 +56,7 @@ namespace Bloggie.Web.Controllers
         {
 
             // use db context for read the tags
-            var tags = await bloggieDbContext.Tags.ToListAsync();
+            var tags = await tagRepository.GetAllAsync();
 
             return View(tags);
         }
@@ -66,7 +67,7 @@ namespace Bloggie.Web.Controllers
         public async Task<IActionResult> Edit(Guid id)
         {
 
-            var tag = await bloggieDbContext.Tags.FirstOrDefaultAsync(x => x.Id == id);
+            var tag = await tagRepository.GetAsync(id);
 
             if (tag != null)
             {
@@ -93,24 +94,17 @@ namespace Bloggie.Web.Controllers
                 DisplayName = editTagRequest.DisplayName
             };
 
-            var existingTag = await bloggieDbContext.Tags.FindAsync(tag.Id);
+           var UpdatedTag = await tagRepository.UpdateAsync(tag);
 
-
-            if (existingTag != null)
+            if(UpdatedTag != null)
             {
-                existingTag.Name = tag.Name;
-                existingTag.DisplayName = tag.DisplayName;
-
-
-                // save changes
-                await bloggieDbContext.SaveChangesAsync();
-
-                // success notification
-                return RedirectToAction("Edit", new { id = editTagRequest.Id });
+                // show success notification
+            }else
+            {
+                // failure notification
 
             }
 
-            // failure notification
 
             return RedirectToAction("Edit", new { id = editTagRequest.Id });
         }
@@ -119,15 +113,11 @@ namespace Bloggie.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Delete(EditTagRequest editTagRequest)
         {
-            var tag = bloggieDbContext.Tags.Find(editTagRequest.Id);
+            var DeletedTag = await tagRepository.DeleteAsync(editTagRequest.Id);
 
-            if (tag != null)
+            if(DeletedTag != null)
             {
-               bloggieDbContext.Tags.Remove(tag);
-              await bloggieDbContext.SaveChangesAsync();
-
-
-                // show sucess notification
+                // show an success notification
                 return RedirectToAction("List");
             }
 
