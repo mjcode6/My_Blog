@@ -2,6 +2,7 @@
 using Bloggie.Web.Models.ViewModels;
 using Bloggie.Web.Repo;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ActionConstraints;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Bloggie.Web.Controllers
@@ -78,7 +79,7 @@ namespace Bloggie.Web.Controllers
 
             blogPost.Tags = SelectedTags;
 
-            await blogPostRepository.AddAasync(blogPost);
+            await blogPostRepository.AddAsync(blogPost);
 
             return RedirectToAction("Add");
         }
@@ -186,10 +187,42 @@ namespace Bloggie.Web.Controllers
 
             blogPostDomainModel.Tags = selectedTags;
 
+
+
+            // submit information to repository to update
+
+          var UpdatedBlog =   await blogPostRepository.UpdateAsync(blogPostDomainModel);
+
+            if(UpdatedBlog != null)
+            {
+                // show success notif
+
+
+                return RedirectToAction("Edit");
+            }
+
+            // show error notif
+            return RedirectToAction("Edit");
         }
 
 
+        [HttpPost]
 
+        public async Task<IActionResult> Delete(EditBlogPostRequest editBlogPostRequest)
+        {
+            // talk to repository to delete posts and tags
+
+           var deletedBlogPost = await blogPostRepository.DeleteAsync(editBlogPostRequest.Id);
+
+
+            if(deletedBlogPost != null)
+            {
+                // show  success notif
+                return RedirectToAction("List");
+            }
+            // show error
+            return RedirectToAction("Edit", new { Id = editBlogPostRequest.Id});
+        }
 
     }
 }

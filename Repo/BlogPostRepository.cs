@@ -1,6 +1,7 @@
 ﻿using Bloggie.Web.Data;
 using Bloggie.Web.Models.Domain;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Bloggie.Web.Repo
 {
@@ -26,20 +27,22 @@ namespace Bloggie.Web.Repo
 
        
 
-        public Task<BlogPost?> DeleteAasync()
+        public async Task<BlogPost?> DeleteAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var existingBlog = await bloggieDbContext.BlogPosts.FindAsync(id);
+
+            if(existingBlog != null)
+            {
+                bloggieDbContext.BlogPosts.Remove(existingBlog);
+                await bloggieDbContext.SaveChangesAsync();
+                return existingBlog;
+
+            }
+            return null;
         }
 
-        public Task<BlogPost?> DeleteAasync(Guid id)
-        {
-            throw new NotImplementedException();
-        }
 
-        public Task<BlogPost?> GetAasync()
-        {
-            throw new NotImplementedException();
-        }
+    
 
         public async Task<BlogPost?> GetAsync(Guid id)
         {
@@ -51,26 +54,38 @@ namespace Bloggie.Web.Repo
             return await bloggieDbContext.BlogPosts.Include(x => x.Tags).ToListAsync();
         }
 
-        public Task<BlogPost?> UpdateAasync()
-        {
-            throw new NotImplementedException();
-        }
+       
 
-        public async Task<BlogPost?> UpdateAasync(BlogPost blogPost)
+        public async Task<BlogPost?> UpdateAsync(BlogPost blogPost)
         {
             var existingBlog = await bloggieDbContext.BlogPosts.Include(x => x.Tags).FirstOrDefaultAsync(x => x.Id == blogPost.Id);
+
+            if(existingBlog != null)
+            {
+                existingBlog.Id = blogPost.Id;
+                existingBlog.Heading = blogPost.Heading;
+                existingBlog.PageTitle = blogPost.PageTitle;
+                existingBlog.Content = blogPost.Content;
+                existingBlog.ShortDescription = blogPost.ShortDescription;
+                existingBlog.FeaturedImageUrl = blogPost.FeaturedImageUrl;
+                existingBlog.UrlHandle = blogPost.UrlHandle;
+                existingBlog.PublichedDate = blogPost.PublichedDate;
+                existingBlog.Author = blogPost.Author;
+                existingBlog.Visible = blogPost.Visible;
+                existingBlog.Tags = blogPost.Tags;
+
+
+                await bloggieDbContext.SaveChangesAsync();
+                return existingBlog;
+            }
+
+
+            return null;
+
+
+
         }
 
-        public Task<BlogPost?> GetAasync(Guid id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<BlogPost> AddAasync(BlogPost blogPost)
-        {
-            throw new NotImplementedException();
-        }
-
-      
+       
     }
 }

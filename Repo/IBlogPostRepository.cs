@@ -7,11 +7,10 @@ namespace Bloggie.Web.Repo
 
 
         Task<IEnumerable<BlogPost>> GetAllAsync();
-             Task<BlogPost?> GetAsync(Guid id);
-
-        Task<BlogPost> AddAasync(BlogPost blogPost);
-        Task<BlogPost?> UpdateAasync(BlogPost blogPost);
-        Task<BlogPost?> DeleteAasync(Guid id);
+        Task<BlogPost?> GetAsync(Guid id);
+        Task<BlogPost> AddAsync(BlogPost blogPost);
+        Task<BlogPost?> UpdateAsync(BlogPost blogPost);
+        Task<BlogPost?> DeleteAsync(Guid id);
        
     }
 }

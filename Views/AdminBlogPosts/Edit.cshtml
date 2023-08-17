@@ -13,7 +13,7 @@
     {
 
 
-
+ <form method="post">       
 
         <div class="mb-3">
             <label class="form-label"> Id </label>
@@ -87,9 +87,12 @@
 
 
 
-        <div class="mb-3">
+        <div class="mb-3 d-flex">
             <button type="submit" class="btn btn-dark">Update</button>
+            <button type="submit" class="bgn btn-danger ms-2" asp-area="" asp-controller="AdminBlogPosts" asp-action="Delete"> Delete</button>
             </div>
+
+        </form>
 
     }
     else
