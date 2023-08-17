@@ -12,9 +12,6 @@ namespace Bloggie.Web.Repo
         Task<Tag?> UpdateAsync(Tag tag);
 
         Task<Tag?> DeleteAsync(Guid id);
-
-
-
-
+       
     }
 }

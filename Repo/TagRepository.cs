@@ -45,6 +45,11 @@ namespace Bloggie.Web.Repo
           return  await bloggieDbContext.Tags.ToListAsync();
         }
 
+        public Task<IEnumerable<Tag>> GetAllAsync(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<Tag> GetAsync(Guid id)
         {
             return await bloggieDbContext.Tags.FirstOrDefaultAsync(x => x.Id == id);
