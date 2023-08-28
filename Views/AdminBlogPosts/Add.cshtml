@@ -37,6 +37,19 @@
             <input type="text" class="form-control" id="ShortDescription" asp-for="ShortDescription" />
 
         </div>
+
+
+        <div class="mg-3">
+            <label class="form-label" >Featured image Uplode  </label>
+            <input type="file" id="FeaturedImageUpload" class="form-control" />
+
+        </div>
+
+
+
+
+
+
         <div class="mb-3">
             <label class="form-label"> Featured Image Url </label>
             <input type="text" class="form-control" id="FeaturedImageUrl" asp-for="FeaturedImageUrl" />
@@ -88,3 +101,26 @@
     </form>
 
 </div>
+
+
+@section Scripts {
+    <script>
+
+        var response = "";
+        var editor = new FroalaEditor('#content');
+
+        const featuredUploadElement = document.getElementById('FeaturedImageUpload');
+       // const featuredImageUrlElement = document.getElementById('FeaturedImageUrl');
+
+             async function uploadFeaturedImage(e) {  
+    
+            console.log(e.target.files[0]);
+
+
+                   
+        }
+
+         featuredUploadElement.addEventListener('change', uploadFeaturedImage);
+        
+    </script>
+}
