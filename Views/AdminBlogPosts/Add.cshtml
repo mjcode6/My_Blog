@@ -43,10 +43,13 @@
             <label class="form-label" >Featured image Uplode  </label>
             <input type="file" id="FeaturedImageUpload" class="form-control" />
 
+
+            <img src="" id="featuredImageDisplay" style="display: none; width: 300px;" />
+
         </div>
 
 
-
+        
 
 
 
@@ -107,17 +110,36 @@
     <script>
 
         var response = "";
-        var editor = new FroalaEditor('#content');
+        var editor = new FroalaEditor('#content', {
+            imageUploadUrl: '/api/images'
+        }
+        );
 
         const featuredUploadElement = document.getElementById('FeaturedImageUpload');
-       // const featuredImageUrlElement = document.getElementById('FeaturedImageUrl');
+        const featuredImageUrlElement = document.getElementById('FeaturedImageUrl');
+        const featuredImageDisplayElement = document.getElementById('featuredImageDisplay');
 
              async function uploadFeaturedImage(e) {  
     
             console.log(e.target.files[0]);
 
 
-                   
+                 let data = new FormData();
+                 data.append('file',e.target.files[0]);
+
+                 await fetch('/api/images', {
+                     method: 'POST',
+                     headers: {
+                         'Aceept': '*/*',
+                     },
+                     body: data
+                 }).then(response => response.json())
+                     .then(result => {
+                         featuredImageUrlElement.value = result.link;
+                         featuredImageDisplayElement.src = result.link;
+                         featuredImageDisplayElement.style.display = 'block';
+
+                     });
         }
 
          featuredUploadElement.addEventListener('change', uploadFeaturedImage);
