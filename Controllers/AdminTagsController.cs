@@ -2,6 +2,7 @@
 using Bloggie.Web.Models.Domain;
 using Bloggie.Web.Models.ViewModels;
 using Bloggie.Web.Repo;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection.Metadata.Ecma335;
@@ -9,7 +10,7 @@ using System.Reflection.Metadata.Ecma335;
 namespace Bloggie.Web.Controllers
 {
 
-
+    [Authorize(Roles = "Admin")]
 
     public class AdminTagsController : Controller
     {
@@ -22,8 +23,7 @@ namespace Bloggie.Web.Controllers
 
 
 
-
-
+     
         [HttpGet]
         public IActionResult Add()
         {
