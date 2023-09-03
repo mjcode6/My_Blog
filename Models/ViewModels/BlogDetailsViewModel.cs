@@ -1,9 +1,10 @@
-﻿namespace Bloggie.Web.Models.Domain
-{
-    public class BlogPost
-    {
+﻿using Bloggie.Web.Models.Domain;
 
-        public Guid  Id { get; set; }
+namespace Bloggie.Web.Models.ViewModels
+{
+    public class BlogDetailsViewModel
+    {
+        public Guid Id { get; set; }
         public string Heading { get; set; }
         public string PageTitle { get; set; }
         public string Content { get; set; }
@@ -15,10 +16,8 @@
         public DateTime PublichedDate { get; set; }
         public bool Visible { get; set; }
 
+        public int TotalLikes { get; set; }
 
-        // Navigation property
         public ICollection<Tag> Tags { get; set; }
-        public ICollection<BlogPostLike> Like { get; set; }
-
     }
 }

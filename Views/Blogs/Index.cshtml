@@ -1,4 +1,9 @@
-﻿@model Bloggie.Web.Models.Domain.BlogPost
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> signInManager
+@inject UserManager<IdentityUser> UserManager
+
+
+@model Bloggie.Web.Models.ViewModels.BlogDetailsViewModel
 @{
 
     ViewData["Title"] = Model.PageTitle;
@@ -23,8 +28,20 @@
                 
                 </div>
 
+                <div class="mb-3">
 
-             
+                   @if(signInManager.IsSignedIn(User)){
+
+                       <a id="btnLike"  style="cursor: pointer;">
+                            <i class=" bi bi-hand-thumbs-up"></i>
+                       </a>
+
+
+                   }
+
+                    <span>@Model.TotalLikes </span>
+
+                    </div>
 
 
                 <div class="mb-3 d-flex ">
@@ -57,3 +74,39 @@
     </div>
 
 </div>
+
+
+
+@section Scripts{
+
+    <script>
+
+        const btnLikeElement = document.getElementById('btnLike');
+
+        async function AddLikeForBlog() {
+
+
+            fetch('/api/BlogPostLike/Add', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': '*/*'
+                },
+                body: JSON.stringify({
+                    blogPostId: '@Model.Id',
+                    UserId: '@UserManager.GetUserId(User)'
+                })
+            }).then(console.log('requestFinished'));
+        }
+
+
+
+
+
+
+
+        btnLikeElement.addEventListener('click', AddLikeForBlog);
+
+
+    </script>
+    }                    
