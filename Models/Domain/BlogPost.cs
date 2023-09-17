@@ -19,6 +19,7 @@
         // Navigation property
         public ICollection<Tag> Tags { get; set; }
         public ICollection<BlogPostLike> Like { get; set; }
+        public ICollection<BlogPostComment> Comments { get; set; }
 
     }
 }

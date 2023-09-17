@@ -82,3 +82,4 @@ C:\Users\mjsiv\Desktop\Bloggie.Web\bin\Debug\net7.0\Microsoft.Extensions.Identit
 C:\Users\mjsiv\Desktop\Bloggie.Web\bin\Debug\net7.0\Microsoft.Extensions.Identity.Stores.dll
 C:\Users\mjsiv\Desktop\Bloggie.Web\bin\Debug\net7.0\Microsoft.Extensions.Options.dll
 C:\Users\mjsiv\Desktop\Bloggie.Web\bin\Debug\net7.0\Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore.dll
+C:\Users\mjsiv\Desktop\Bloggie.Web\obj\Debug\net7.0\Bloggie.Web.sourcelink.json
