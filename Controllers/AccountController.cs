@@ -28,31 +28,38 @@ namespace Bloggie.Web.Controllers
 
         public async Task<IActionResult> Register(RegisterViewModel registerViewModel)
         {
-            var identityUser = new IdentityUser
+            if (ModelState.IsValid)
             {
-                UserName = registerViewModel.Username,
-                Email = registerViewModel.Email,
 
-
-            };
-
-
-           var identityResult =  await userManager.CreateAsync(identityUser, registerViewModel.Password);
-
-            if (identityResult.Succeeded)
-            {
-                // assign the user the "User" role
-
-             var roleIdentityResult =   await userManager.AddToRoleAsync(identityUser, "user");
-
-                if (roleIdentityResult.Succeeded)
+                var identityUser = new IdentityUser
                 {
-                    // show succdess notif
-                    return RedirectToAction("Register");
+                    UserName = registerViewModel.Username,
+                    Email = registerViewModel.Email,
+
+
+                };
+
+
+                var identityResult = await userManager.CreateAsync(identityUser, registerViewModel.Password);
+
+                if (identityResult.Succeeded)
+                {
+                    // assign the user the "User" role
+
+                    var roleIdentityResult = await userManager.AddToRoleAsync(identityUser, "user");
+
+                    if (roleIdentityResult.Succeeded)
+                    {
+                        // show succdess notif
+                        return RedirectToAction("Register");
+                    }
+
+
                 }
+            }
 
 
-             }
+
 
             // show error notif
 
@@ -79,6 +86,11 @@ namespace Bloggie.Web.Controllers
 
         public async Task<IActionResult> LogIn(LogInViewModel logInViewModel)
         {
+
+            if (ModelState.IsValid)
+            {
+                return View();
+            }
           var signInResult =  await signInManager.PasswordSignInAsync(logInViewModel.Username, logInViewModel.Password,false,false);
 
             if(signInResult != null && signInResult.Succeeded)
